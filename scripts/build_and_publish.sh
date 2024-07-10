@@ -15,7 +15,7 @@ LATEST_IMAGE_NAME=$REPO_NAME:$BRANCH-latest
 # Build image
 
 echo "Building $IMAGE_NAME..."
-DOCKER_TAG=$VERSION docker build . || exit $?
+docker build -t $IMAGE_NAME . || exit $?
 docker tag $IMAGE_NAME $LATEST_IMAGE_NAME
 
 echo "========================================================================================="
