@@ -8,7 +8,9 @@ on:
       - beta
       - develop
       - 'v*.*.*'
-
+  push:
+    branches:
+      - '*'
 
 jobs:
   build:
