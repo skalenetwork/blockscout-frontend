@@ -12,7 +12,14 @@ interface Params {
 
 export default function getCurrencyValue({ value, accuracy, accuracyUsd, decimals, exchangeRate }: Params) {
   const valueCurr = BigNumber(value).div(BigNumber(10 ** Number(decimals || '18')));
-  const valueResult = accuracy ? valueCurr.dp(accuracy).toFormat() : valueCurr.toFormat();
+  const powTransactionLimit = 1e27;
+
+  let valueResult: string | undefined;
+  if (Number(valueCurr) > powTransactionLimit) {
+    valueResult = valueCurr.toExponential(5);
+  } else {
+    valueResult = accuracy ? valueCurr.dp(accuracy).toFormat() : valueCurr.toFormat();
+  }
 
   let usdResult: string | undefined;
   let usdBn = ZERO;
