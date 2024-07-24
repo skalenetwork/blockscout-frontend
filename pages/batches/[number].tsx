@@ -15,6 +15,8 @@ const Batch = dynamic(() => {
   }
 
   switch (rollupFeature.type) {
+    case 'arbitrum':
+      return import('ui/pages/ArbitrumL2TxnBatch');
     case 'zkEvm':
       return import('ui/pages/ZkEvmL2TxnBatch');
     case 'zkSync':
@@ -25,7 +27,7 @@ const Batch = dynamic(() => {
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/batches/[number]" query={ props }>
+    <PageNextJs pathname="/batches/[number]" query={ props.query }>
       <Batch/>
     </PageNextJs>
   );
