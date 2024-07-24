@@ -1,5 +1,5 @@
 import type { IconButtonProps } from '@chakra-ui/react';
-import { Popover, PopoverContent, PopoverBody, PopoverTrigger, IconButton, Tooltip, Box } from '@chakra-ui/react';
+import { Popover, PopoverContent, PopoverBody, PopoverTrigger, IconButton, Tooltip, Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
@@ -12,9 +12,12 @@ import useMenuButtonColors from '../useMenuButtonColors';
 
 type Props = {
   isHomePage?: boolean;
+  className?: string;
+  fallbackIconSize?: number;
+  buttonBoxSize?: string;
 };
 
-const ProfileMenuDesktop = ({ isHomePage }: Props) => {
+const ProfileMenuDesktop = ({ isHomePage, className, fallbackIconSize, buttonBoxSize }: Props) => {
   const { data, error, isPending } = useFetchProfileInfo();
   const loginUrl = useLoginUrl();
   const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
@@ -81,11 +84,12 @@ const ProfileMenuDesktop = ({ isHomePage }: Props) => {
         <Box>
           <PopoverTrigger>
             <IconButton
+              className={ className }
               aria-label="profile menu"
-              icon={ <UserAvatar size={ 20 }/> }
+              icon={ <UserAvatar size={ 20 } fallbackIconSize={ fallbackIconSize }/> }
               variant={ variant }
               colorScheme="blue"
-              boxSize="40px"
+              boxSize={ buttonBoxSize ?? '40px' }
               flexShrink={ 0 }
               { ...iconButtonProps }
               { ...iconButtonStyles }
@@ -94,7 +98,7 @@ const ProfileMenuDesktop = ({ isHomePage }: Props) => {
         </Box>
       </Tooltip>
       { hasMenu && (
-        <PopoverContent w="212px">
+        <PopoverContent maxW="400px" minW="220px" w="min-content">
           <PopoverBody padding="24px 16px 16px 16px">
             <ProfileMenuContent data={ data }/>
           </PopoverBody>
@@ -104,4 +108,4 @@ const ProfileMenuDesktop = ({ isHomePage }: Props) => {
   );
 };
 
-export default ProfileMenuDesktop;
+export default chakra(ProfileMenuDesktop);

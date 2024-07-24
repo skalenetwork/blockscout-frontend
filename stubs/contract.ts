@@ -10,7 +10,22 @@ export const CONTRACT_CODE_UNVERIFIED = {
 } as SmartContract;
 
 export const CONTRACT_CODE_VERIFIED = {
-  abi: [],
+  abi: [
+    {
+      inputs: [],
+      name: 'symbol',
+      outputs: [ { internalType: 'string', name: '', type: 'string' } ],
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      inputs: [ { internalType: 'address', name: 'newOwner', type: 'address' } ],
+      name: 'transferOwnership',
+      outputs: [],
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+  ],
   additional_sources: [],
   can_be_visualized_via_sol2uml: true,
   compiler_settings: {

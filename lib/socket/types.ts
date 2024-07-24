@@ -4,6 +4,7 @@ import type { AddressCoinBalanceHistoryItem, AddressTokensBalancesSocketMessage 
 import type { NewBlockSocketResponse } from 'types/api/block';
 import type { SmartContractVerificationResponse } from 'types/api/contract';
 import type { RawTracesResponse } from 'types/api/rawTrace';
+import type { TokenInstanceMetadataSocketMessage } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { Transaction } from 'types/api/transaction';
 import type { NewZkEvmBatchSocketResponse } from 'types/api/zkEvmL2';
@@ -28,9 +29,11 @@ SocketMessage.AddressTxs |
 SocketMessage.AddressTxsPending |
 SocketMessage.AddressTokenTransfer |
 SocketMessage.AddressChangedBytecode |
+SocketMessage.AddressFetchedBytecode |
 SocketMessage.SmartContractWasVerified |
 SocketMessage.TokenTransfers |
 SocketMessage.TokenTotalSupply |
+SocketMessage.TokenInstanceMetadataFetched |
 SocketMessage.ContractVerification |
 SocketMessage.NewZkEvmL2Batch |
 SocketMessage.Unknown;
@@ -64,9 +67,11 @@ export namespace SocketMessage {
   export type AddressTxsPending = SocketMessageParamsGeneric<'pending_transaction', { transactions: Array<Transaction> }>;
   export type AddressTokenTransfer = SocketMessageParamsGeneric<'token_transfer', { token_transfers: Array<TokenTransfer> }>;
   export type AddressChangedBytecode = SocketMessageParamsGeneric<'changed_bytecode', Record<string, never>>;
+  export type AddressFetchedBytecode = SocketMessageParamsGeneric<'fetched_bytecode', { fetched_bytecode: string }>;
   export type SmartContractWasVerified = SocketMessageParamsGeneric<'smart_contract_was_verified', Record<string, never>>;
   export type TokenTransfers = SocketMessageParamsGeneric<'token_transfer', {token_transfer: number }>;
   export type TokenTotalSupply = SocketMessageParamsGeneric<'total_supply', {total_supply: number }>;
+  export type TokenInstanceMetadataFetched = SocketMessageParamsGeneric<'fetched_token_instance_metadata', TokenInstanceMetadataSocketMessage>;
   export type ContractVerification = SocketMessageParamsGeneric<'verification_result', SmartContractVerificationResponse>;
   export type NewZkEvmL2Batch = SocketMessageParamsGeneric<'new_zkevm_confirmed_batch', NewZkEvmBatchSocketResponse>;
   export type Unknown = SocketMessageParamsGeneric<undefined, unknown>;
