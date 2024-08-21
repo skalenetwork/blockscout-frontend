@@ -1,46 +1,62 @@
-import { Button, Skeleton } from '@chakra-ui/react';
+import { Button, Spinner, Tooltip, useColorModeValue, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
+import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
 import IconSvg from 'ui/shared/IconSvg';
 
 import useScoreLevelAndColor from './useScoreLevelAndColor';
 
 interface Props {
-  className?: string;
   score: number;
   isLoading?: boolean;
-  height?: string;
   onlyIcon?: boolean;
   onClick?: () => void;
+  label?: string | React.ReactElement;
+  isActive: boolean;
+  className?: string;
 }
 
 const SolidityscanReportButton = (
-  { className, score, isLoading, height = '32px', onlyIcon, onClick }: Props,
+  { score, isLoading, onlyIcon, onClick, label = 'Security score', isActive, className }: Props,
   ref: React.ForwardedRef<HTMLButtonElement>,
 ) => {
   const { scoreColor } = useScoreLevelAndColor(score);
+  const colorLoading = useColorModeValue('gray.300', 'gray.600');
+  const isMobile = useIsMobile();
+  const onFocusCapture = usePreventFocusAfterModalClosing();
 
   return (
-    <Skeleton isLoaded={ !isLoading } borderRadius="base">
+    <Tooltip label={ label } isDisabled={ isMobile } openDelay={ 100 } textAlign="center">
       <Button
-        ref={ ref }
         className={ className }
-        color={ scoreColor }
+        ref={ ref }
+        color={ isLoading ? colorLoading : scoreColor }
         size="sm"
         variant="outline"
         colorScheme="gray"
         onClick={ onClick }
+        isActive={ isActive }
         aria-label="SolidityScan score"
         fontWeight={ 500 }
         px="6px"
-        h={ height }
         flexShrink={ 0 }
+        columnGap={ 1 }
+        isDisabled={ isLoading }
+        _disabled={{
+          opacity: 1,
+          _hover: {
+            color: colorLoading,
+          },
+        }}
+        onFocusCapture={ onFocusCapture }
       >
-        <IconSvg name={ score < 80 ? 'score/score-not-ok' : 'score/score-ok' } boxSize={ 5 } mr={ onlyIcon ? 0 : 1 }/>
-        { onlyIcon ? null : score }
+        <IconSvg name={ score < 80 ? 'score/score-not-ok' : 'score/score-ok' } boxSize={ 5 }/>
+        { isLoading && <Spinner size="sm"/> }
+        { !isLoading && (onlyIcon ? null : score) }
       </Button>
-    </Skeleton>
+    </Tooltip>
   );
 };
 
-export default React.forwardRef(SolidityscanReportButton);
+export default chakra(React.forwardRef(SolidityscanReportButton));
