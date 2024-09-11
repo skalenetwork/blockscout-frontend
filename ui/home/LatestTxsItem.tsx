@@ -100,7 +100,16 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
               <TxFeeStability data={ tx.stability_fee } accuracy={ 5 } color="text_secondary" hideUsd/>
             ) : (
               <Text as="span" variant="secondary">
-                { tx.fee.value ? `${ getValueWithUnit(tx.fee.value).dp(5).toFormat() } ${ currencyUnits.ether }` : '-' }
+                { tx.fee.value ? 
+                  (() => {
+                    const value = getValueWithUnit(tx.fee.value);
+                    const LARGE_NUMBER_THRESHOLD = 1e+27;
+                    return value.gt(LARGE_NUMBER_THRESHOLD) ?
+                      value.toExponential(5) :
+                      value.dp(5).toFormat();
+                  })() 
+                  : '-' 
+                }
               </Text>
             ) }
           </Skeleton>

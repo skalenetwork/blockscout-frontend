@@ -20,8 +20,15 @@ interface Props {
 
 const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
   const balance = data.coin_balance && data.coin_balance !== '0' ?
-    BigNumber(data.coin_balance).div(10 ** config.chain.currency.decimals).dp(6).toFormat() :
-    '0';
+  (() => {
+    const value = BigNumber(data.coin_balance).div(10 ** config.chain.currency.decimals);
+    const LARGE_BALANCE_THRESHOLD = 1e18;
+
+    return value.gt(LARGE_BALANCE_THRESHOLD) ?
+      value.toExponential(5) : 
+      value.dp(6).toFormat();
+  })()
+  : '0';
 
   const license = (() => {
     const license = CONTRACT_LICENSES.find((license) => license.type === data.license_type);
