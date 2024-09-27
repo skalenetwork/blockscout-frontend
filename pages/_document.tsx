@@ -3,9 +3,9 @@ import type { DocumentContext } from 'next/document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
 
+import logRequestFromBot from 'nextjs/utils/logRequestFromBot';
 import * as serverTiming from 'nextjs/utils/serverTiming';
 
-import getApiDataForSocialPreview from 'lib/metadata/getApiDataForSocialPreview';
 import theme from 'theme';
 import * as svgSprite from 'ui/shared/IconSvg';
 
@@ -22,7 +22,7 @@ class MyDocument extends Document {
       return result;
     };
 
-    await getApiDataForSocialPreview(ctx.req, ctx.res, ctx.pathname);
+    await logRequestFromBot(ctx.req, ctx.res, ctx.pathname);
 
     const initialProps = await Document.getInitialProps(ctx);
 
@@ -44,14 +44,14 @@ class MyDocument extends Document {
           />
 
           { /* eslint-disable-next-line @next/next/no-sync-scripts */ }
-          <script src="/envs.js"/>
+          <script src="/assets/envs.js"/>
 
           { /* FAVICON */ }
-          <link rel="icon" href="/favicon/favicon.ico" sizes="48x48"/>
-          <link rel="icon" sizes="32x32" type="image/png" href="/favicon/favicon-32x32.png"/>
-          <link rel="icon" sizes="16x16" type="image/png"href="/favicon/favicon-16x16.png"/>
-          <link rel="apple-touch-icon" href="/favicon/apple-touch-icon-180x180.png"/>
-          <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg"/>
+          <link rel="icon" href="/assets/favicon/favicon.ico" sizes="48x48"/>
+          <link rel="icon" sizes="32x32" type="image/png" href="/assets/favicon/favicon-32x32.png"/>
+          <link rel="icon" sizes="16x16" type="image/png"href="/assets/favicon/favicon-16x16.png"/>
+          <link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon-180x180.png"/>
+          <link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg"/>
 
           <link rel="preload" as="image" href={ svgSprite.href }/>
         </Head>

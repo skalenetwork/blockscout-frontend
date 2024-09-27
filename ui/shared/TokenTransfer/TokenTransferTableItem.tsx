@@ -5,6 +5,7 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import { getTokenTypeName } from 'lib/token/tokenTypes';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
@@ -52,15 +53,15 @@ const TokenTransferTableItem = ({
         </Td>
       ) }
       <Td>
-        <Flex flexDir="column" alignItems="flex-start" my="3px" rowGap={ 2 }>
-          <TokenEntity
-            token={ token }
-            isLoading={ isLoading }
-            noSymbol
-            noCopy
-            my="2px"
-          />
-          <Tag isLoading={ isLoading }>{ token.type }</Tag>
+        <TokenEntity
+          token={ token }
+          isLoading={ isLoading }
+          noSymbol
+          noCopy
+          mt={ 1 }
+        />
+        <Flex columnGap={ 2 } rowGap={ 2 } mt={ 2 } flexWrap="wrap">
+          <Tag isLoading={ isLoading }>{ getTokenTypeName(token.type) }</Tag>
           <Tag colorScheme="orange" isLoading={ isLoading }>{ getTokenTransferTypeText(type) }</Tag>
         </Flex>
       </Td>

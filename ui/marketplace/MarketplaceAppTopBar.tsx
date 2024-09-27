@@ -1,35 +1,34 @@
-import { chakra, Flex, Tooltip, Skeleton, useBoolean, Box } from '@chakra-ui/react';
+import { chakra, Flex, Tooltip, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
-import type { MarketplaceAppOverview, MarketplaceAppSecurityReport } from 'types/client/marketplace';
-import { ContractListTypes } from 'types/client/marketplace';
+import type { MarketplaceAppOverview, MarketplaceAppSecurityReport, ContractListTypes } from 'types/client/marketplace';
 
 import { route } from 'nextjs-routes';
 
+import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
-import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
+import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
+import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
+import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
 
 import AppSecurityReport from './AppSecurityReport';
 import ContractListModal from './ContractListModal';
-import MarketplaceAppAlert from './MarketplaceAppAlert';
 import MarketplaceAppInfo from './MarketplaceAppInfo';
 
 type Props = {
   data: MarketplaceAppOverview | undefined;
   isLoading: boolean;
-  isWalletConnected: boolean;
   securityReport?: MarketplaceAppSecurityReport;
 }
 
-const MarketplaceAppTopBar = ({ data, isLoading, isWalletConnected, securityReport }: Props) => {
-  const [ showContractList, setShowContractList ] = useBoolean(false);
+const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
+  const [ contractListType, setContractListType ] = React.useState<ContractListTypes>();
   const appProps = useAppContext();
   const isMobile = useIsMobile();
-  const { value: isExperiment } = useFeatureValue('security_score_exp', false);
 
   const goBackUrl = React.useMemo(() => {
     if (appProps.referrer && appProps.referrer.includes('/apps') && !appProps.referrer.includes('/apps/')) {
@@ -44,34 +43,19 @@ const MarketplaceAppTopBar = ({ data, isLoading, isWalletConnected, securityRepo
     } catch (err) {}
   }
 
+  const showContractList = React.useCallback((id: string, type: ContractListTypes) => setContractListType(type), []);
+  const hideContractList = React.useCallback(() => setContractListType(undefined), []);
+
   return (
     <>
-      <Flex alignItems="center" flexWrap="wrap" mb={{ base: 6, md: 2 }} rowGap={ 3 } columnGap={ 2 }>
-        <Tooltip label="Back to dApps list" order={ 1 }>
-          <LinkInternal display="inline-flex" href={ goBackUrl } h="32px" isLoading={ isLoading }>
+      <Flex alignItems="center" flexWrap="wrap" mb={{ base: 3, md: 2 }} rowGap={ 3 } columnGap={ 2 }>
+        { !isMobile && <NetworkLogo isCollapsed/> }
+        <Tooltip label="Back to dApps list">
+          <LinkInternal display="inline-flex" href={ goBackUrl } h="32px" isLoading={ isLoading } ml={ isMobile ? 0 : 4 }>
             <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" margin="auto" color="gray.400"/>
           </LinkInternal>
         </Tooltip>
-        <Skeleton width={{ base: '100%', md: 'auto' }} order={{ base: 5, md: 2 }} isLoaded={ !isLoading }>
-          <MarketplaceAppAlert internalWallet={ data?.internalWallet } isWalletConnected={ isWalletConnected }/>
-        </Skeleton>
-        <Skeleton order={{ base: 2, md: 3 }} isLoaded={ !isLoading }>
-          <MarketplaceAppInfo data={ data }/>
-        </Skeleton>
-        { (isExperiment && (securityReport || isLoading)) && (
-          <Box order={{ base: 3, md: 4 }}>
-            <AppSecurityReport
-              id={ data?.id || '' }
-              securityReport={ securityReport }
-              showContractList={ setShowContractList.on }
-              isLoading={ isLoading }
-              onlyIcon={ isMobile }
-              source="App page"
-            />
-          </Box>
-        ) }
         <LinkExternal
-          order={{ base: 4, md: 5 }}
           href={ data?.url }
           variant="subtle"
           fontSize="sm"
@@ -85,12 +69,31 @@ const MarketplaceAppTopBar = ({ data, isLoading, isWalletConnected, securityRepo
             { getHostname(data?.url) }
           </chakra.span>
         </LinkExternal>
+        <Skeleton isLoaded={ !isLoading }>
+          <MarketplaceAppInfo data={ data }/>
+        </Skeleton>
+        { (securityReport || isLoading) && (
+          <AppSecurityReport
+            id={ data?.id || '' }
+            securityReport={ securityReport }
+            showContractList={ showContractList }
+            isLoading={ isLoading }
+            onlyIcon={ isMobile }
+            source="App page"
+          />
+        ) }
+        { !isMobile && (
+          <Flex flex="1" justifyContent="flex-end">
+            { config.features.account.isEnabled && <ProfileMenuDesktop boxSize="32px" fallbackIconSize={ 16 }/> }
+            { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop size="sm"/> }
+          </Flex>
+        ) }
       </Flex>
-      { showContractList && (
+      { contractListType && (
         <ContractListModal
-          type={ ContractListTypes.ANALYZED }
+          type={ contractListType }
           contracts={ securityReport?.contractsData }
-          onClose={ setShowContractList.off }
+          onClose={ hideContractList }
         />
       ) }
     </>

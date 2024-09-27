@@ -7,6 +7,7 @@ import type { VerifiedContract } from 'types/api/contracts';
 import config from 'configs/app';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import dayjs from 'lib/date/dayjs';
+import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShorten from 'ui/shared/HashStringShorten';
@@ -19,8 +20,15 @@ interface Props {
 
 const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
   const balance = data.coin_balance && data.coin_balance !== '0' ?
-    BigNumber(data.coin_balance).div(10 ** config.chain.currency.decimals).dp(6).toFormat() :
-    '0';
+  (() => {
+    const value = BigNumber(data.coin_balance).div(10 ** config.chain.currency.decimals);
+    const LARGE_BALANCE_THRESHOLD = 1e18;
+
+    return value.gt(LARGE_BALANCE_THRESHOLD) ?
+      value.toExponential(5) : 
+      value.dp(6).toFormat();
+  })()
+  : '0';
 
   const license = (() => {
     const license = CONTRACT_LICENSES.find((license) => license.type === data.license_type);
@@ -34,13 +42,15 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
   return (
     <Tr>
       <Td>
-        <AddressEntity
-          address={ data.address }
-          isLoading={ isLoading }
-          query={{ tab: 'contract' }}
-          noCopy
-          mt={ 1 }
-        />
+        <Flex alignItems="center" mt={ 1 }>
+          <AddressEntity
+            address={ data.address }
+            isLoading={ isLoading }
+            query={{ tab: 'contract' }}
+            noCopy
+          />
+          { data.certified && <ContractCertifiedLabel iconSize={ 5 } boxSize={ 5 } ml={ 2 }/> }
+        </Flex>
         <Flex alignItems="center" ml={ 7 }>
           <Skeleton isLoaded={ !isLoading } color="text_secondary" my={ 1 }>
             <HashStringShorten hash={ data.address.hash } isTooltipDisabled/>

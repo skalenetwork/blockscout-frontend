@@ -10,7 +10,12 @@ set -e
 
 REPO_NAME=skalenetwork/blockscout-frontend
 IMAGE_NAME=$REPO_NAME:$VERSION
-LATEST_IMAGE_NAME=$REPO_NAME:$BRANCH-latest
+
+if [ "$BRANCH" = "stable" ]; then
+  LATEST_IMAGE_NAME=$REPO_NAME:latest
+else
+  LATEST_IMAGE_NAME=$REPO_NAME:$BRANCH-latest
+fi
 
 # Build image
 
