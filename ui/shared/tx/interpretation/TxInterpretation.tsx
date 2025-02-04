@@ -1,7 +1,8 @@
-import { Skeleton, Tooltip, chakra } from '@chakra-ui/react';
+import { Tooltip, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import type { AddressParam } from 'types/api/addressParams';
 import type {
   TxInterpretationSummary,
   TxInterpretationVariable,
@@ -12,23 +13,34 @@ import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import * as mixpanel from 'lib/mixpanel/index';
 import { currencyUnits } from 'lib/units';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
-import { extractVariables, getStringChunks, fillStringVariables, checkSummary, NATIVE_COIN_SYMBOL_VAR_NAME } from './utils';
+import {
+  extractVariables,
+  getStringChunks,
+  fillStringVariables,
+  checkSummary,
+  NATIVE_COIN_SYMBOL_VAR_NAME,
+  WEI_VAR_NAME,
+} from './utils';
 
 type Props = {
   summary?: TxInterpretationSummary;
   isLoading?: boolean;
+  addressDataMap?: Record<string, AddressParam>;
   className?: string;
-}
+};
 
-type NonStringTxInterpretationVariable = Exclude<TxInterpretationVariable, TxInterpretationVariableString>
+type NonStringTxInterpretationVariable = Exclude<TxInterpretationVariable, TxInterpretationVariableString>;
 
-const TxInterpretationElementByType = ({ variable }: { variable?: NonStringTxInterpretationVariable }) => {
+const TxInterpretationElementByType = (
+  { variable, addressDataMap }: { variable?: NonStringTxInterpretationVariable; addressDataMap?: Record<string, AddressParam> },
+) => {
   const onAddressClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Address click' });
   }, []);
@@ -51,7 +63,8 @@ const TxInterpretationElementByType = ({ variable }: { variable?: NonStringTxInt
       return (
         <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
           <AddressEntity
-            address={ value }
+            address={ addressDataMap?.[value.hash] || value }
+            icon={{ marginRight: 1 }}
             truncation="constant"
             onClick={ onAddressClick }
             whiteSpace="initial"
@@ -64,6 +77,7 @@ const TxInterpretationElementByType = ({ variable }: { variable?: NonStringTxInt
         <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
           <TokenEntity
             token={ value }
+            icon={{ marginRight: 1 }}
             onlySymbol
             noCopy
             width="fit-content"
@@ -79,7 +93,8 @@ const TxInterpretationElementByType = ({ variable }: { variable?: NonStringTxInt
         return (
           <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
             <EnsEntity
-              name={ value }
+              domain={ value }
+              icon={{ marginRight: 1 }}
               width="fit-content"
               _notFirst={{ marginLeft: 1 }}
               whiteSpace="initial"
@@ -122,7 +137,7 @@ const TxInterpretationElementByType = ({ variable }: { variable?: NonStringTxInt
   }
 };
 
-const TxInterpretation = ({ summary, isLoading, className }: Props) => {
+const TxInterpretation = ({ summary, isLoading, addressDataMap, className }: Props) => {
   if (!summary) {
     return null;
   }
@@ -142,17 +157,26 @@ const TxInterpretation = ({ summary, isLoading, className }: Props) => {
   return (
     <Skeleton isLoaded={ !isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap" >
       <Tooltip label="Transaction summary">
-        <IconSvg name="lightning" boxSize={ 5 } color="text_secondary" mr={ 2 } verticalAlign="text-top"/>
+        <IconSvg name="lightning" boxSize={ 5 } color="text_secondary" mr={ 1 } verticalAlign="text-top"/>
       </Tooltip>
       { chunks.map((chunk, index) => {
+        let content = null;
+        if (variablesNames[index] === NATIVE_COIN_SYMBOL_VAR_NAME) {
+          content = <chakra.span>{ currencyUnits.ether + ' ' }</chakra.span>;
+        } else if (variablesNames[index] === WEI_VAR_NAME) {
+          content = <chakra.span>{ currencyUnits.wei + ' ' }</chakra.span>;
+        } else {
+          content = (
+            <TxInterpretationElementByType
+              variable={ variables[variablesNames[index]] as NonStringTxInterpretationVariable }
+              addressDataMap={ addressDataMap }
+            />
+          );
+        }
         return (
           <chakra.span key={ chunk + index }>
             <chakra.span color="text_secondary">{ chunk.trim() + (chunk.trim() && variablesNames[index] ? ' ' : '') }</chakra.span>
-            { index < variablesNames.length && (
-              variablesNames[index] === NATIVE_COIN_SYMBOL_VAR_NAME ?
-                <chakra.span>{ currencyUnits.ether + ' ' }</chakra.span> :
-                <TxInterpretationElementByType variable={ variables[variablesNames[index]] as NonStringTxInterpretationVariable }/>
-            ) }
+            { index < variablesNames.length && content }
           </chakra.span>
         );
       }) }

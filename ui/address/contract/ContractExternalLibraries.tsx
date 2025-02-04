@@ -7,11 +7,9 @@ import {
   Modal,
   ModalCloseButton,
   ModalContent,
-  Popover,
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
-  Skeleton,
   StackDivider,
   useDisclosure,
   VStack,
@@ -22,6 +20,8 @@ import type { SmartContractExternalLibrary } from 'types/api/contract';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
+import Popover from 'ui/shared/chakra/Popover';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
