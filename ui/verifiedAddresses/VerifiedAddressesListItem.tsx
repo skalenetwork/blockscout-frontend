@@ -1,9 +1,10 @@
-import { IconButton, Link, Skeleton, Tooltip } from '@chakra-ui/react';
+import { IconButton, Link, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfoApplication, VerifiedAddress } from 'types/api/account';
 
 import dayjs from 'lib/date/dayjs';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -48,6 +49,7 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
     }
 
     const token = {
+      type: 'ERC-20' as const,
       icon_url: application.iconUrl,
       address: application.tokenAddress,
       name: item.metadata.tokenName,

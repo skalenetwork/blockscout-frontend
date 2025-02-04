@@ -1,18 +1,19 @@
-import { Flex, HStack, Skeleton } from '@chakra-ui/react';
+import { Flex, HStack } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import { currencyUnits } from 'lib/units';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import Tag from 'ui/shared/chakra/Tag';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 type Props = InternalTransaction & { currentAddress: string; isLoading?: boolean };
@@ -26,7 +27,7 @@ const TxInternalsListItem = ({
   error,
   created_contract: createdContract,
   transaction_hash: txnHash,
-  block,
+  block_number: blockNumber,
   timestamp,
   currentAddress,
   isLoading,
@@ -47,15 +48,19 @@ const TxInternalsListItem = ({
           fontWeight={ 700 }
           truncation="constant_long"
         />
-        <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm">
-          <span>{ dayjs(timestamp).fromNow() }</span>
-        </Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ timestamp }
+          isLoading={ isLoading }
+          color="text_secondary"
+          fontWeight="400"
+          fontSize="sm"
+        />
       </Flex>
       <HStack spacing={ 1 }>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Block</Skeleton>
         <BlockEntity
           isLoading={ isLoading }
-          number={ block }
+          number={ blockNumber }
           noIcon
           fontSize="sm"
           lineHeight={ 5 }

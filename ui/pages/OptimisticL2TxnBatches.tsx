@@ -1,11 +1,11 @@
-import { Hide, Show, Skeleton, Text } from '@chakra-ui/react';
+import { Hide, Show, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { nbsp } from 'lib/html-entities';
 import { L2_TXN_BATCHES_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -23,7 +23,7 @@ const OptimisticL2TxnBatches = () => {
         {
           next_page_params: {
             items_count: 50,
-            block_number: 9045200,
+            id: 9045200,
           },
         },
       ),
@@ -41,7 +41,7 @@ const OptimisticL2TxnBatches = () => {
       <Show below="lg" ssr={ false }>
         { data.items.map(((item, index) => (
           <OptimisticL2TxnBatchesListItem
-            key={ item.l2_block_number + (isPlaceholderData ? String(index) : '') }
+            key={ item.internal_id + (isPlaceholderData ? String(index) : '') }
             item={ item }
             isLoading={ isPlaceholderData }
           />
@@ -60,9 +60,9 @@ const OptimisticL2TxnBatches = () => {
 
     return (
       <Skeleton isLoaded={ !countersQuery.isPlaceholderData && !isPlaceholderData } display="flex" flexWrap="wrap">
-        Tx batch (L2 block)
-        <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[0].l2_block_number } </Text>to
-        <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[data.items.length - 1].l2_block_number } </Text>
+        Txn batch
+        <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[0].internal_id } </Text>to
+        <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[data.items.length - 1].internal_id } </Text>
         (total of { countersQuery.data?.toLocaleString() } batches)
       </Skeleton>
     );
@@ -72,11 +72,11 @@ const OptimisticL2TxnBatches = () => {
 
   return (
     <>
-      <PageTitle title={ `Tx batches (L2${ nbsp }blocks)` } withTextAd/>
+      <PageTitle title="Txn batches" withTextAd/>
       <DataListDisplay
         isError={ isError }
         items={ data?.items }
-        emptyText="There are no tx batches."
+        emptyText="There are no txn batches."
         content={ content }
         actionBar={ actionBar }
       />

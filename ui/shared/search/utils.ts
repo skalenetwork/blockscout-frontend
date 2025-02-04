@@ -1,5 +1,5 @@
-import type { SearchResultItem } from 'types/api/search';
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
+import type { SearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
 
@@ -13,9 +13,9 @@ Record<'app', Array<MarketplaceAppOverview>>;
 export type SearchResultAppItem = {
   type: 'app';
   app: MarketplaceAppOverview;
-}
+};
 
-export const searchCategories: Array<{id: Category; title: string }> = [
+export const searchCategories: Array<{ id: Category; title: string }> = [
   { id: 'app', title: 'DApps' },
   { id: 'token', title: `Tokens (${ config.chain.tokenStandard }-20)` },
   { id: 'nft', title: `NFTs (${ config.chain.tokenStandard }-721 & 1155)` },
@@ -34,7 +34,7 @@ if (config.features.dataAvailability.isEnabled) {
 }
 
 if (config.features.nameService.isEnabled) {
-  searchCategories.push({ id: 'domain', title: 'Names' });
+  searchCategories.unshift({ id: 'domain', title: 'Names' });
 }
 
 export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleShort: string }> = {

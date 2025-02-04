@@ -2,10 +2,10 @@ import {
   useColorModeValue,
   chakra,
   Button,
-  Skeleton,
 } from '@chakra-ui/react';
 import React from 'react';
 
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -42,7 +42,7 @@ const AdditionalInfoButton = ({ isOpen, onClick, className, isLoading }: Props, 
       <IconSvg
         name="info"
         boxSize={ 5 }
-        color="link"
+        color={ isOpen ? 'link_hovered' : 'icon_info' }
         _hover={{ color: 'link_hovered' }}
       />
     </Button>
