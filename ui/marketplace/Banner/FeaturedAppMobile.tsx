@@ -1,11 +1,12 @@
-import { IconButton, Image, Link, LinkBox, Skeleton, useColorModeValue, Flex } from '@chakra-ui/react';
+import { IconButton, Image, Link, LinkBox, useColorModeValue, Flex } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
-import IconSvg from 'ui/shared/IconSvg';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 
+import FavoriteIcon from '../FavoriteIcon';
 import MarketplaceAppCardLink from '../MarketplaceAppCardLink';
 import MarketplaceAppIntegrationIcon from '../MarketplaceAppIntegrationIcon';
 
@@ -43,7 +44,7 @@ const FeaturedAppMobile = ({
       padding={{ base: 3, sm: '20px' }}
       role="group"
       background={ useColorModeValue('purple.50', 'whiteAlpha.100') }
-      mb={ 4 }
+      mt={ 6 }
     >
       <Flex
         flexDirection="row"
@@ -144,10 +145,7 @@ const FeaturedAppMobile = ({
             w={ 9 }
             h={ 8 }
             onClick={ onFavoriteClick }
-            icon={ isFavorite ?
-              <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
-              <IconSvg name="star_outline" w={ 5 } h={ 5 } color="gray.400"/>
-            }
+            icon={ <FavoriteIcon isFavorite={ isFavorite }/> }
           />
         ) }
       </Flex>

@@ -2,18 +2,18 @@ import {
   Flex,
   Button,
   chakra,
-  Popover,
   PopoverTrigger,
   PopoverBody,
   PopoverContent,
   Image,
-  Skeleton,
   useDisclosure,
   useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import Popover from 'ui/shared/chakra/Popover';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 

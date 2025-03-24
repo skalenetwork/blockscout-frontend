@@ -1,4 +1,4 @@
-import { Td, Tr, Text, Skeleton } from '@chakra-ui/react';
+import { Td, Tr, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ZkSyncBatchesItem } from 'types/api/zkSyncL2';
@@ -6,19 +6,18 @@ import type { ZkSyncBatchesItem } from 'types/api/zkSyncL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import ZkSyncL2TxnBatchStatus from 'ui/shared/statusTag/ZkSyncL2TxnBatchStatus';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
 type Props = { item: ZkSyncBatchesItem; isLoading?: boolean };
 
 const ZkSyncTxnBatchesTableItem = ({ item, isLoading }: Props) => {
-  const timeAgo = item.timestamp ? dayjs(item.timestamp).fromNow() : 'Undefined';
-
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'zkSync') {
     return null;
   }
@@ -39,9 +38,12 @@ const ZkSyncTxnBatchesTableItem = ({ item, isLoading }: Props) => {
         <ZkSyncL2TxnBatchStatus status={ item.status } isLoading={ isLoading }/>
       </Td>
       <Td verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } color="text_secondary">
-          <span>{ timeAgo }</span>
-        </Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ item.timestamp }
+          fallbackText="Undefined"
+          isLoading={ isLoading }
+          color="text_secondary"
+        />
       </Td>
       <Td verticalAlign="middle">
         <LinkInternal
@@ -49,7 +51,7 @@ const ZkSyncTxnBatchesTableItem = ({ item, isLoading }: Props) => {
           isLoading={ isLoading }
         >
           <Skeleton isLoaded={ !isLoading } minW="40px" my={ 1 }>
-            { item.tx_count }
+            { item.transaction_count }
           </Skeleton>
         </LinkInternal>
       </Td>

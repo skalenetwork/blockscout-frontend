@@ -1,10 +1,11 @@
-import { Image, Link, Skeleton, Tooltip } from '@chakra-ui/react';
+import { Image, Link, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
 
 import config from 'configs/app';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import TextSeparator from 'ui/shared/TextSeparator';
 
@@ -14,10 +15,9 @@ interface Props {
   isLoading?: boolean;
   appActionData?: AddressMetadataTagFormatted['meta'];
   source: 'NFT collection' | 'NFT item';
-  isActionButtonExperiment?: boolean;
 }
 
-const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source, isActionButtonExperiment }: Props) => {
+const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source }: Props) => {
   if (!hash || config.UI.views.nft.marketplaces.length === 0) {
     return null;
   }
@@ -31,7 +31,7 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source, isAc
         Marketplaces
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value
-        py={ (appActionData && isActionButtonExperiment) ? '1px' : '6px' }
+        py={ appActionData ? '1px' : '6px' }
       >
         <Skeleton isLoaded={ !isLoading } display="flex" columnGap={ 3 } flexWrap="wrap" alignItems="center">
           { config.UI.views.nft.marketplaces.map((item) => {
@@ -52,7 +52,7 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source, isAc
               </Tooltip>
             );
           }) }
-          { (appActionData && isActionButtonExperiment) && (
+          { appActionData && (
             <>
               <TextSeparator color="gray.500" margin={ 0 }/>
               <AppActionButton data={ appActionData } height="30px" source={ source }/>

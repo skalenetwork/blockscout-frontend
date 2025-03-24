@@ -1,15 +1,21 @@
 import type { NextRouter } from 'next/router';
 
+import type { SelectOption } from 'ui/shared/select/types';
+
+import config from 'configs/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import removeQueryParam from 'lib/router/removeQueryParam';
-import type { TOption } from 'ui/shared/sort/Option';
 
-export type SortValue = 'security_score';
+const feature = config.features.marketplace;
 
-export const SORT_OPTIONS: Array<TOption<SortValue>> = [
-  { title: 'Default', id: undefined },
-  { title: 'Security score', id: 'security_score' },
-];
+export type SortValue = 'rating_score' | 'rating_count' | 'security_score';
+
+export const SORT_OPTIONS: Array<SelectOption<SortValue>> = [
+  { label: 'Default', value: undefined },
+  (feature.isEnabled && feature.rating) && { label: 'Top rated', value: 'rating_score' },
+  (feature.isEnabled && feature.rating) && { label: 'Most rated', value: 'rating_count' },
+  (feature.isEnabled && feature.securityReportsUrl) && { label: 'Security score', value: 'security_score' },
+].filter(Boolean) as Array<SelectOption<SortValue>>;
 
 export function getAppUrl(url: string | undefined, router: NextRouter) {
   if (!url) {

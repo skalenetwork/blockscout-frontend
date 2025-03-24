@@ -1,16 +1,17 @@
-import { chakra, Tr, Td, Skeleton } from '@chakra-ui/react';
+import { chakra, Tr, Td } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
 
 import dayjs from 'lib/date/dayjs';
 import NameDomainExpiryStatus from 'ui/nameDomain/NameDomainExpiryStatus';
+import Skeleton from 'ui/shared/chakra/Skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 
 type Props = bens.Domain & {
   isLoading?: boolean;
-}
+};
 
 const NameDomainsTableItem = ({
   isLoading,
@@ -24,7 +25,7 @@ const NameDomainsTableItem = ({
   return (
     <Tr>
       <Td verticalAlign="middle">
-        <EnsEntity name={ name } protocol={ protocol } isLoading={ isLoading } fontWeight={ 600 }/>
+        <EnsEntity domain={ name } protocol={ protocol } isLoading={ isLoading } fontWeight={ 600 }/>
       </Td>
       <Td verticalAlign="middle">
         { resolvedAddress && <AddressEntity address={ resolvedAddress } isLoading={ isLoading } fontWeight={ 500 }/> }
@@ -32,7 +33,7 @@ const NameDomainsTableItem = ({
       <Td verticalAlign="middle" pl={ 9 }>
         { registrationDate && (
           <Skeleton isLoaded={ !isLoading }>
-            { dayjs(registrationDate).format('MMM DD YYYY HH:mm:ss A') }
+            { dayjs(registrationDate).format('lll') }
             <chakra.span color="text_secondary"> { dayjs(registrationDate).fromNow() }</chakra.span>
           </Skeleton>
         ) }
@@ -40,7 +41,7 @@ const NameDomainsTableItem = ({
       <Td verticalAlign="middle">
         { expiryDate && (
           <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap">
-            <span>{ dayjs(expiryDate).format('MMM DD YYYY HH:mm:ss A') } </span>
+            <span>{ dayjs(expiryDate).format('lll') } </span>
             <NameDomainExpiryStatus date={ expiryDate }/>
           </Skeleton>
         ) }
