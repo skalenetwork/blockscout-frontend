@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js';
 
 import type { Block } from 'types/api/block';
+
 import config from 'configs/app';
 
 export default function getBlockReward(block: Block) {

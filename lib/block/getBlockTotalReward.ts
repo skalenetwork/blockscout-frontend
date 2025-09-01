@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js';
 import type { Block } from 'types/api/block';
 
 import { WEI, ZERO } from 'lib/consts';
+
 import getBlockReward from './getBlockReward';
 
 export default function getBlockTotalReward(block: Block) {
