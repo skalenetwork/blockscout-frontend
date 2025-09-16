@@ -35,6 +35,7 @@ const chain = Object.freeze({
   rpcUrl: getEnvValue('NEXT_PUBLIC_NETWORK_RPC_URL'),
   isTestnet: getEnvValue('NEXT_PUBLIC_IS_TESTNET') === 'true',
   verificationType,
+  staticBlockReward: getEnvValue('NEXT_PUBLIC_STATIC_BLOCK_REWARD'),
 });
 
 export default chain;

@@ -385,7 +385,7 @@ const BlockDetails = ({ query }: Props) => {
         <>
           <DetailsInfoItem.Label
             hint={
-              `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${ config.chain.currency.symbol || 'native token' } 
+              `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${ config.chain.currency.symbol || 'native token' }
           on top of the fees paid for all transactions in the block`
             }
             isLoading={ isPlaceholderData }
@@ -511,8 +511,8 @@ const BlockDetails = ({ query }: Props) => {
         <>
           <DetailsInfoItem.Label
             hint={
-              `Amount of ${ config.chain.currency.symbol || 'native token' } burned from transactions included in the block. 
-              Equals Block Base Fee per Gas * Gas Used`
+              `Amount of ${ config.chain.currency.symbol || 'native token' } burned from transactions included in the block.
+              Equals Gas Price * Gas Used * Burnt Fee Fraction`
             }
             isLoading={ isPlaceholderData }
           >
