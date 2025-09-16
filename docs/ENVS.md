@@ -104,6 +104,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | NEXT_PUBLIC_NETWORK_MULTIPLE_GAS_CURRENCIES | `boolean` | Set to `true` for networks where users can pay transaction fees in either the native coin or ERC-20 tokens.  | - | `false` | `true` | v1.33.0+ |
 | NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE | `validation` \| `mining` | Verification type in the network. Irrelevant for Arbitrum (verification type is always `posting`) and ZkEvm (verification type is always `sequencing`) L2s | - | `mining` | `validation` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_TOKEN_STANDARD_NAME | `string` | Name of the standard for creating tokens | - | `ERC` | `BEP` | v1.31.0+ |
+| NEXT_PUBLIC_STATIC_BLOCK_REWARD | `string` | Static block reward amount in wei. When set, this value will be used instead of calculating the static reward from transaction fees and burnt fees | - | - | `2500000000000000000` | v1.0.x+ |
 | NEXT_PUBLIC_IS_TESTNET | `boolean`| Set to true if network is testnet | - | `false` | `true` | v1.0.x+ |
 
 &nbsp;

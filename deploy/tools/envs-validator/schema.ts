@@ -594,6 +594,7 @@ const schema = yup
     NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS: yup.number().integer().positive(),
     NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL: yup.string(),
     NEXT_PUBLIC_NETWORK_MULTIPLE_GAS_CURRENCIES: yup.boolean(),
+    NEXT_PUBLIC_STATIC_BLOCK_REWARD: yup.string(),
     NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: yup
       .string<NetworkVerificationTypeEnvs>().oneOf([ 'validation', 'mining' ])
       .when('NEXT_PUBLIC_ROLLUP_TYPE', {
