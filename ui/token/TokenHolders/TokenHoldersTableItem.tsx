@@ -1,5 +1,6 @@
 import { Tr, Td } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { CONFIDENTIAL_BALANCE_MAGIC_VALUE } from 'lib/consts';
 import React from 'react';
 
 import type { TokenHolder, TokenInfo } from 'types/api/token';
@@ -15,7 +16,9 @@ type Props = {
 };
 
 const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
-  const quantity = BigNumber(holder.value).div(BigNumber(10 ** Number(token.decimals))).toFormat();
+  const quantity = holder.value === CONFIDENTIAL_BALANCE_MAGIC_VALUE
+    ? 'Encrypted'
+    : BigNumber(holder.value).div(BigNumber(10 ** Number(token.decimals))).toFormat();
 
   return (
     <Tr>
