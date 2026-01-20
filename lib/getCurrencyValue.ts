@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 
-import { ZERO } from 'lib/consts';
+import { CONFIDENTIAL_BALANCE_MAGIC_VALUE, ZERO } from 'lib/consts';
 
 interface Params {
   value: string;
@@ -11,6 +11,10 @@ interface Params {
 }
 
 export default function getCurrencyValue({ value, accuracy, accuracyUsd, decimals, exchangeRate }: Params) {
+  if (value === CONFIDENTIAL_BALANCE_MAGIC_VALUE) {
+    return { valueStr: 'Encrypted', usd: undefined, usdBn: ZERO };
+  }
+
   const valueCurr = BigNumber(value).div(BigNumber(10 ** Number(decimals || '18')));
   const powTransactionLimit = 1e27;
 

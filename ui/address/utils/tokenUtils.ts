@@ -5,7 +5,7 @@ import type { AddressTokenBalance } from 'types/api/address';
 import type { TokenType } from 'types/api/token';
 
 import sumBnReducer from 'lib/bigint/sumBnReducer';
-import { ZERO } from 'lib/consts';
+import { CONFIDENTIAL_BALANCE_MAGIC_VALUE, ZERO } from 'lib/consts';
 
 export type TokenEnhancedData = AddressTokenBalance & {
   usd?: BigNumber ;
@@ -77,7 +77,7 @@ export const filterTokens = (searchTerm: string) => ({ token }: AddressTokenBala
 };
 
 export const calculateUsdValue = (data: AddressTokenBalance): TokenEnhancedData => {
-  if (data.token.type !== 'ERC-20') {
+  if (data.token.type !== 'ERC-20' || data.value === CONFIDENTIAL_BALANCE_MAGIC_VALUE) {
     return data;
   }
 
