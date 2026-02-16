@@ -76,6 +76,43 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
       setIsSigning(false);
     }
   }, [signMessageAsync, formApi]);
+
+  const handleReadAndDecrypt = React.useCallback(async () => {
+    try {
+      setIsSigning(true);
+      setLoading(true);
+      setResult(undefined);
+
+      const signature = await signMessageAsync({ message: MESSAGE });
+      const derivedPrivateKey = keccak256(signature);
+
+      const formData = formApi.getValues();
+      const args = transformFormDataToMethodArgs(formData);
+
+      if (!publicClient) {
+        throw new Error('Public client not available');
+      }
+
+      if (!('name' in data) || !data.name || !('inputs' in data)) {
+        throw new Error('Invalid method data');
+      }
+
+      const encryptedBalance = await publicClient.readContract({
+        address: router.query.hash as `0x${string}`,
+        abi: [data],
+        functionName: data.name,
+        args,
+      });
+
+      if (typeof encryptedBalance !== 'string') {
+        throw new Error('Invalid response from contract');
+      }
+
+      const decryptedBalance = decryptBalance(derivedPrivateKey, encryptedBalance);
+
+      setResult({
+        source: 'public_client',
+        data: decryptedBalance,
       });
 
     } catch (error) {
