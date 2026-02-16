@@ -38,9 +38,13 @@ interface Props {
 
 const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props) => {
 
-  const [ result, setResult ] = React.useState<FormSubmitResult>();
-  const [ isLoading, setLoading ] = React.useState(false);
-  const [ callStrategy, setCallStrategy ] = React.useState<MethodCallStrategy>();
+  const [result, setResult] = React.useState<FormSubmitResult>();
+  const [isLoading, setLoading] = React.useState(false);
+  const router = useRouter();
+  const [callStrategy, setCallStrategy] = React.useState<MethodCallStrategy>();
+  const [isSigning, setIsSigning] = React.useState(false);
+  const { signMessageAsync } = useSignMessage();
+  const publicClient = usePublicClient();
   const callStrategyRef = React.useRef(callStrategy);
 
   const formApi = useForm<ContractMethodFormFields>({
