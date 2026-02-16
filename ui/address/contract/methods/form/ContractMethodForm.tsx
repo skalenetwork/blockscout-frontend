@@ -241,27 +241,27 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
 
     return (
       <Tooltip
-        isDisabled={ isDisabled }
+        isDisabled={isDisabled}
         label="Copied"
-        closeDelay={ SECOND }
-        isOpen={ calldataButtonTooltip.isOpen }
-        onClose={ calldataButtonTooltip.onClose }
+        closeDelay={SECOND}
+        isOpen={calldataButtonTooltip.isOpen}
+        onClose={calldataButtonTooltip.onClose}
       >
         <Button
-          isLoading={ callStrategy === buttonCallStrategy && isLoading }
-          isDisabled={ isDisabled }
-          onClick={ handleButtonClick }
-          loadingText={ text }
+          isLoading={callStrategy === buttonCallStrategy && isLoading}
+          isDisabled={isDisabled}
+          onClick={handleButtonClick}
+          loadingText={text}
           variant="outline"
           size="sm"
-          flexShrink={ 0 }
+          flexShrink={0}
           width="min-content"
-          px={ 4 }
-          ml={ 3 }
+          px={4}
+          ml={3}
           type="submit"
-          data-call-strategy={ buttonCallStrategy }
+          data-call-strategy={buttonCallStrategy}
         >
-          { text }
+          {text}
         </Button>
       </Tooltip>
     );
@@ -269,23 +269,23 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
 
   return (
     <Box>
-      <FormProvider { ...formApi }>
+      <FormProvider {...formApi}>
         <chakra.form
           noValidate
-          onSubmit={ formApi.handleSubmit(onFormSubmit) }
-          onChange={ handleFormChange }
+          onSubmit={formApi.handleSubmit(onFormSubmit)}
+          onChange={handleFormChange}
         >
-          <Flex flexDir="column" rowGap={ 3 } mb={ 6 } _empty={{ display: 'none' }}>
-            { inputs.map((input, index) => {
+          <Flex flexDir="column" rowGap={3} mb={6} _empty={{ display: 'none' }}>
+            {inputs.map((input, index) => {
               const props = {
                 data: input,
-                basePath: `${ index }`,
+                basePath: `${index}`,
                 isDisabled: isLoading,
                 level: 0,
               };
 
               if ('components' in input && input.components && input.type === 'tuple') {
-                return <ContractMethodFieldInputTuple key={ index } { ...props }/>;
+                return <ContractMethodFieldInputTuple key={index} {...props} />;
               }
 
               const arrayMatch = matchArray(input.type);
@@ -296,12 +296,12 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
 
                   return (
                     <ContractMethodFieldAccordion
-                      key={ index }
-                      level={ 0 }
-                      label={ getFieldLabel(input) }
-                      isInvalid={ isInvalid }
+                      key={index}
+                      level={0}
+                      label={getFieldLabel(input)}
+                      isInvalid={isInvalid}
                     >
-                      <ContractMethodFieldInputArray { ...props }/>
+                      <ContractMethodFieldInputArray {...props} />
                     </ContractMethodFieldAccordion>
                   );
 
