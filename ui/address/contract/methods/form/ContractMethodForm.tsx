@@ -139,11 +139,11 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
         calldataButtonTooltip.onClose();
       }, SECOND);
     }
-  }, [ calldataButtonTooltip ]);
+  }, [calldataButtonTooltip]);
 
   const methodType = isReadMethod(data) ? 'read' : 'write';
 
-  const onFormSubmit: SubmitHandler<ContractMethodFormFields> = React.useCallback(async(formData) => {
+  const onFormSubmit: SubmitHandler<ContractMethodFormFields> = React.useCallback(async (formData) => {
     const args = transformFormDataToMethodArgs(formData);
 
     if (callStrategyRef.current === 'copy_calldata') {
@@ -152,7 +152,7 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
       }
 
       const callData = encodeFunctionData({
-        abi: [ data ],
+        abi: [data],
         functionName: data.name,
         // since we have added additional input for native coin value
         // we need to slice it off
