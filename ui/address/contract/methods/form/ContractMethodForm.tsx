@@ -205,20 +205,20 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
 
     return (
       <Button
-        isLoading={ callStrategy === buttonCallStrategy && isLoading }
-        isDisabled={ isLoading }
-        onClick={ handleButtonClick }
-        loadingText={ text }
+        isLoading={callStrategy === buttonCallStrategy && isLoading}
+        isDisabled={isLoading}
+        onClick={handleButtonClick}
+        loadingText={text}
         variant="outline"
         size="sm"
-        flexShrink={ 0 }
+        flexShrink={0}
         width="min-content"
-        px={ 4 }
-        mr={ 3 }
+        px={4}
+        mr={3}
         type="submit"
-        data-call-strategy={ buttonCallStrategy }
+        data-call-strategy={buttonCallStrategy}
       >
-        { text }
+        {text}
       </Button>
     );
   })();
@@ -229,7 +229,7 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
     }
 
     if (inputs.length === 1) {
-      const [ input ] = inputs;
+      const [input] = inputs;
       if ('fieldType' in input && input.fieldType === 'native_coin') {
         return null;
       }
