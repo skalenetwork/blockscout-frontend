@@ -2,7 +2,11 @@ import { Box, Button, Flex, Tooltip, chakra, useDisclosure } from '@chakra-ui/re
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
-import { encodeFunctionData, type AbiFunction } from 'viem';
+import { useRouter } from 'next/router';
+import { encodeFunctionData, type AbiFunction, keccak256 } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
+import { usePublicClient, useSignMessage } from 'wagmi';
+import { decryptBalance } from './decrypt';
 
 import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy, SmartContractMethod } from '../types';
 
