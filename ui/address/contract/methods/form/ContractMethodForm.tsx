@@ -54,6 +54,29 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
 
   const calldataButtonTooltip = useDisclosure();
 
+  const handleSetViewerPublicKey = React.useCallback(async () => {
+    try {
+      setIsSigning(true);
+      const signature = await signMessageAsync({ message: MESSAGE });
+      const derivedPrivateKey = keccak256(signature);
+      const account = privateKeyToAccount(derivedPrivateKey);
+      const publicKey = account.publicKey;
+
+      const cleanKey = publicKey.slice(2);
+      const xyHex = cleanKey.slice(2);
+
+      const x = '0x' + xyHex.slice(0, 64);
+      const y = '0x' + xyHex.slice(64, 128);
+
+      formApi.setValue('0:0', x, { shouldValidate: true, shouldDirty: true });
+      formApi.setValue('0:1', y, { shouldValidate: true, shouldDirty: true });
+    } catch (error) {
+      console.error('Error deriving public key:', error);
+    } finally {
+      setIsSigning(false);
+    }
+  }, [signMessageAsync, formApi]);
+
   const handleButtonClick = React.useCallback((event: React.MouseEvent) => {
     const callStrategy = event?.currentTarget.getAttribute('data-call-strategy');
     setCallStrategy(callStrategy as MethodCallStrategy);
