@@ -76,6 +76,19 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
       setIsSigning(false);
     }
   }, [signMessageAsync, formApi]);
+      });
+
+    } catch (error) {
+      console.error('Error reading and decrypting:', error);
+      setResult({
+        source: 'public_client',
+        data: error,
+      });
+    } finally {
+      setIsSigning(false);
+      setLoading(false);
+    }
+  }, [signMessageAsync, publicClient, router.query.hash, data, formApi]);
 
   const handleButtonClick = React.useCallback((event: React.MouseEvent) => {
     const callStrategy = event?.currentTarget.getAttribute('data-call-strategy');
