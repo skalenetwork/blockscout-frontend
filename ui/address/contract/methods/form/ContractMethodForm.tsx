@@ -131,7 +131,7 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
           'Method name': 'name' in data ? data.name : 'Fallback',
         });
       });
-  }, [ data, methodType, onSubmit ]);
+  }, [data, methodType, onSubmit]);
 
   React.useEffect(() => {
     if (isOpen && !callStrategyRef.current && attempt === 0) {
@@ -142,7 +142,7 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
         onFormSubmit({});
       }
     }
-  }, [ data, isOpen, onFormSubmit, attempt ]);
+  }, [data, isOpen, onFormSubmit, attempt]);
 
   const handleResultSettle = React.useCallback(() => {
     setLoading(false);
@@ -150,19 +150,19 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
 
   const handleFormChange = React.useCallback(() => {
     result && setResult(undefined);
-  }, [ result ]);
+  }, [result]);
 
   const inputs: AbiFunction['inputs'] = React.useMemo(() => {
     return [
       ...('inputs' in data && data.inputs ? data.inputs : []),
-      ...('stateMutability' in data && data.stateMutability === 'payable' ? [ {
-        name: `Send native ${ config.chain.currency.symbol || 'coin' }`,
+      ...('stateMutability' in data && data.stateMutability === 'payable' ? [{
+        name: `Send native ${config.chain.currency.symbol || 'coin'}`,
         type: 'uint256' as const,
         internalType: 'uint256' as const,
         fieldType: 'native_coin' as const,
-      } ] : []),
+      }] : []),
     ];
-  }, [ data ]);
+  }, [data]);
 
   const primaryButton = (() => {
     const isDisabled = !config.features.blockchainInteraction.isEnabled && methodType === 'write';
@@ -170,21 +170,21 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
     const buttonCallStrategy = methodType === 'write' ? 'write' : 'read';
 
     return (
-      <Tooltip label={ isDisabled ? NO_WALLET_CLIENT_TEXT : undefined } maxW="300px">
+      <Tooltip label={isDisabled ? NO_WALLET_CLIENT_TEXT : undefined} maxW="300px">
         <Button
-          isLoading={ callStrategy === buttonCallStrategy && isLoading }
-          isDisabled={ isLoading || isDisabled }
-          onClick={ handleButtonClick }
-          loadingText={ text }
+          isLoading={callStrategy === buttonCallStrategy && isLoading}
+          isDisabled={isLoading || isDisabled}
+          onClick={handleButtonClick}
+          loadingText={text}
           variant="outline"
           size="sm"
-          flexShrink={ 0 }
+          flexShrink={0}
           width="min-content"
-          px={ 4 }
+          px={4}
           type="submit"
-          data-call-strategy={ buttonCallStrategy }
+          data-call-strategy={buttonCallStrategy}
         >
-          { text }
+          {text}
         </Button>
       </Tooltip>
     );
