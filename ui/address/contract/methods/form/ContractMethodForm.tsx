@@ -358,43 +358,72 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
 
                 }
 
-                return <ContractMethodFieldInputArray key={ index } { ...props }/>;
+                return <ContractMethodFieldInputArray key={index} {...props} />;
               }
 
-              return <ContractMethodFieldInput key={ index } { ...props } path={ `${ index }` }/>;
-            }) }
+              return <ContractMethodFieldInput key={index} {...props} path={`${index}`} />;
+            })}
           </Flex>
-          { secondaryButton }
-          { primaryButton }
-          { copyCallDataButton }
-          { result && !isLoading && (
+          {secondaryButton}
+          {primaryButton}
+          {copyCallDataButton}
+
+          {'name' in data && data.name === 'setViewerPublicKey' && (
+            <Button
+              isLoading={isSigning}
+              isDisabled={isLoading || isSigning}
+              onClick={handleSetViewerPublicKey}
+              variant="outline"
+              size="sm"
+              flexShrink={0}
+              px={4}
+              ml={3}
+            >
+              Paste derived public key
+            </Button>
+          )}
+          {'name' in data && data.name === 'encryptedBalanceOf' && (
+            <Button
+              isLoading={isSigning}
+              isDisabled={isLoading || isSigning}
+              onClick={handleReadAndDecrypt}
+              variant="outline"
+              size="sm"
+              flexShrink={0}
+              px={4}
+              ml={3}
+            >
+              Read & Decrypt
+            </Button>
+          )}
+          {result && !isLoading && (
             <Button
               variant="simple"
               colorScheme="blue"
               size="sm"
-              onClick={ onReset }
-              ml={ 1 }
+              onClick={onReset}
+              ml={1}
             >
-              <IconSvg name="repeat" boxSize={ 5 } mr={ 1 }/>
+              <IconSvg name="repeat" boxSize={5} mr={1} />
               Reset
             </Button>
-          ) }
+          )}
         </chakra.form>
       </FormProvider>
-      { result && result.source === 'wallet_client' && (
+      {result && result.source === 'wallet_client' && (
         <ContractMethodResultWalletClient
-          data={ result.data }
-          onSettle={ handleResultSettle }
+          data={result.data}
+          onSettle={handleResultSettle}
         />
-      ) }
-      { 'outputs' in data && data.outputs.length > 0 && (
+      )}
+      {'outputs' in data && data.outputs.length > 0 && (
         <ContractMethodResultPublicClient
-          data={ result && result.source === 'public_client' ? result.data : undefined }
-          onSettle={ handleResultSettle }
-          abiItem={ data }
-          mode={ result && result.source === 'public_client' ? 'result' : 'preview' }
+          data={result && result.source === 'public_client' ? result.data : undefined}
+          onSettle={handleResultSettle}
+          abiItem={data}
+          mode={result && result.source === 'public_client' ? 'result' : 'preview'}
         />
-      ) }
+      )}
     </Box>
   );
 };
