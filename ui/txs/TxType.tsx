@@ -11,6 +11,7 @@ export interface Props {
 
 const TYPES_ORDER: Array<TransactionType> = [
   'blob_transaction',
+  'ctx',
   'rootstock_remasc',
   'rootstock_bridge',
   'token_creation',
@@ -34,6 +35,10 @@ const TxType = ({ types, isLoading }: Props) => {
     case 'blob_transaction':
       label = 'Blob txn';
       colorScheme = 'yellow';
+      break;
+    case 'ctx':
+      label = 'CTX';
+      colorScheme = 'purple';
       break;
     case 'contract_creation':
       label = 'Contract creation';

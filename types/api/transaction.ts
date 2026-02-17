@@ -180,7 +180,8 @@ export type TransactionType = 'rootstock_remasc' |
 'contract_call' |
 'token_creation' |
 'coin_transfer' |
-'blob_transaction';
+'blob_transaction' |
+'ctx';
 
 export type TxsResponse = TransactionsResponseValidated | TransactionsResponsePending | BlockTransactionsResponse;
 
