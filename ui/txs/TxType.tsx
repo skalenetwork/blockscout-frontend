@@ -11,6 +11,7 @@ export interface Props {
 
 const TYPES_ORDER: Array<TransactionType> = [
   'blob_transaction',
+  'ctx',
   'rootstock_remasc',
   'rootstock_bridge',
   'token_creation',
