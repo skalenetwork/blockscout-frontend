@@ -27,7 +27,7 @@ import type { ContractMethodFormFields } from './utils';
 
 // eslint-disable-next-line max-len
 const NO_WALLET_CLIENT_TEXT = 'Blockchain interaction is not available at the moment since WalletConnect is not configured for this application. Please contact the service maintainer to make necessary changes in the service configuration.';
-const MESSAGE = 'Access Skale Privacy Dashboard';
+const MESSAGE = 'Sign this message to derive your SKALE View Key. This will allow the explorer to decrypt and display your private balance locally.';
 
 interface Props {
   data: SmartContractMethod;
