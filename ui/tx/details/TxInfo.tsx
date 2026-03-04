@@ -40,6 +40,7 @@ import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import Hint from 'ui/shared/Hint';
@@ -163,6 +164,44 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           </>
         ) }
       </DetailsInfoItem.Value>
+
+      { data.ctx_origin_transaction_hash && (
+        <>
+          <DetailsInfoItem.Label
+            hint="The origin transaction that triggered this CTX (Conditional Transaction)"
+            isLoading={ isLoading }
+          >
+            Origin CTX
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <TxEntity
+              hash={ data.ctx_origin_transaction_hash }
+              isLoading={ isLoading }
+              noIcon
+              noCopy={ false }
+            />
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
+      { data.derived_ctx_transaction_hash && (
+        <>
+          <DetailsInfoItem.Label
+            hint="The CTX (Conditional Transaction) that was derived from this origin transaction"
+            isLoading={ isLoading }
+          >
+            Derived CTX
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <TxEntity
+              hash={ data.derived_ctx_transaction_hash }
+              isLoading={ isLoading }
+              noIcon
+              noCopy={ false }
+            />
+          </DetailsInfoItem.Value>
+        </>
+      ) }
 
       <DetailsInfoItem.Label
         hint="Current transaction state: Success, Failed (Error), or Pending (In Process)"
@@ -690,8 +729,8 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         <>
           <DetailsInfoItem.Label
             hint={ `
-            Base Fee refers to the network Base Fee at the time of the block, 
-            while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay 
+            Base Fee refers to the network Base Fee at the time of the block,
+            while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay
             for their tx & to give to the ${ getNetworkValidatorTitle() } respectively
           ` }
             isLoading={ isLoading }
