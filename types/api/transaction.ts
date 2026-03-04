@@ -105,6 +105,9 @@ export type Transaction = {
   translation?: NovesTxTranslation;
   arbitrum?: ArbitrumTransactionData;
   scroll?: ScrollTransactionData;
+  // SKALE fields
+  ctx_origin_transaction_hash?: string | null;
+  derived_ctx_transaction_hash?: string | null;
 };
 
 type ArbitrumTransactionData = {
