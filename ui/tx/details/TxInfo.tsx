@@ -184,25 +184,6 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         </>
       ) }
 
-      { data.derived_ctx_transaction_hash && (
-        <>
-          <DetailsInfoItem.Label
-            hint="The CTX (Conditional Transaction) that was derived from this origin transaction"
-            isLoading={ isLoading }
-          >
-            Derived CTX
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            <TxEntity
-              hash={ data.derived_ctx_transaction_hash }
-              isLoading={ isLoading }
-              noIcon
-              noCopy={ false }
-            />
-          </DetailsInfoItem.Value>
-        </>
-      ) }
-
       <DetailsInfoItem.Label
         hint="Current transaction state: Success, Failed (Error), or Pending (In Process)"
         isLoading={ isLoading }
