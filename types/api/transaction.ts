@@ -107,7 +107,7 @@ export type Transaction = {
   scroll?: ScrollTransactionData;
   // SKALE fields
   ctx_origin_transaction_hash?: string | null;
-  derived_ctx_transaction_hash?: string | null;
+  has_crafted_ctxs?: boolean;
 };
 
 type ArbitrumTransactionData = {
