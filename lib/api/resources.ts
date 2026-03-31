@@ -53,6 +53,7 @@ import type {
   ArbitrumLatestDepositsResponse,
 } from 'types/api/arbitrumL2';
 import type { TxBlobs, Blob } from 'types/api/blobs';
+import type { SkaleCraftedCtxsResponse } from 'types/api/skaleCraftedCtxs';
 import type {
   BlocksResponse,
   BlockTransactionsResponse,
@@ -508,6 +509,10 @@ export const RESOURCES = {
   },
   tx_blobs: {
     path: '/api/v2/transactions/:hash/blobs',
+    pathParams: [ 'hash' as const ],
+  },
+  tx_crafted_ctxs: {
+    path: '/api/v2/transactions/:hash/crafted-ctxs',
     pathParams: [ 'hash' as const ],
   },
   tx_interpretation: {
@@ -1295,6 +1300,7 @@ Q extends 'tx_token_transfers' ? TokenTransferResponse :
 Q extends 'tx_raw_trace' ? RawTracesResponse :
 Q extends 'tx_state_changes' ? TxStateChanges :
 Q extends 'tx_blobs' ? TxBlobs :
+Q extends 'tx_crafted_ctxs' ? SkaleCraftedCtxsResponse :
 Q extends 'tx_interpretation' ? TxInterpretationResponse :
 Q extends 'addresses' ? AddressesResponse :
 Q extends 'addresses_metadata_search' ? AddressesMetadataSearchResult :

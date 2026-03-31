@@ -21,6 +21,7 @@ import TxDetails from 'ui/tx/TxDetails';
 import TxDetailsDegraded from 'ui/tx/TxDetailsDegraded';
 import TxDetailsWrapped from 'ui/tx/TxDetailsWrapped';
 import TxInternals from 'ui/tx/TxInternals';
+import TxCraftedCtxs from 'ui/tx/TxCraftedCtxs';
 import TxLogs from 'ui/tx/TxLogs';
 import TxRawTrace from 'ui/tx/TxRawTrace';
 import TxState from 'ui/tx/TxState';
@@ -63,6 +64,9 @@ const TransactionPageContent = () => {
         { id: 'user_ops', title: 'User operations', component: <TxUserOps txQuery={ txQuery }/> } :
         undefined,
       { id: 'internal', title: 'Internal txns', component: <TxInternals txQuery={ txQuery }/> },
+      txQuery.data?.has_crafted_ctxs ?
+        { id: 'crafted_ctxs', title: 'Crafted CTXs', component: <TxCraftedCtxs txQuery={ txQuery }/> } :
+        undefined,
       config.features.dataAvailability.isEnabled && txQuery.data?.blob_versioned_hashes?.length ?
         { id: 'blobs', title: 'Blobs', component: <TxBlobs txQuery={ txQuery }/> } :
         undefined,
