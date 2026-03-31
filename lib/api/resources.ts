@@ -53,7 +53,6 @@ import type {
   ArbitrumLatestDepositsResponse,
 } from 'types/api/arbitrumL2';
 import type { TxBlobs, Blob } from 'types/api/blobs';
-import type { SkaleCraftedCtxsResponse } from 'types/api/skaleCraftedCtxs';
 import type {
   BlocksResponse,
   BlockTransactionsResponse,
@@ -117,6 +116,7 @@ import type {
 } from 'types/api/scrollL2';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'types/api/shibarium';
+import type { SkaleCraftedCtxsResponse } from 'types/api/skaleCraftedCtxs';
 import type { HomeStats } from 'types/api/stats';
 import type {
   TokenCounters,
