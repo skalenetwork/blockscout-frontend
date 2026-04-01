@@ -5,6 +5,7 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
+import { CONFIDENTIAL_BALANCE_MAGIC_VALUE } from 'lib/consts';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
@@ -21,12 +22,16 @@ const TokenSelectItem = ({ data }: Props) => {
     switch (data.token.type) {
       case 'ERC-20': {
         const tokenDecimals = Number(data.token.decimals) || 18;
-        const text = `${ BigNumber(data.value).dividedBy(10 ** tokenDecimals).dp(8).toFormat() } ${ data.token.symbol || '' }`;
+        const text = data.value === CONFIDENTIAL_BALANCE_MAGIC_VALUE ?
+          `Encrypted ${ data.token.symbol || '' }`.trim() :
+          `${ BigNumber(data.value).dividedBy(10 ** tokenDecimals).dp(8).toFormat() } ${ data.token.symbol || '' }`;
 
         return (
           <>
             <TruncatedValue value={ text }/>
-            { data.token.exchange_rate && <chakra.span ml={ 2 }>@{ Number(data.token.exchange_rate).toLocaleString() }</chakra.span> }
+            { data.token.exchange_rate && data.value !== CONFIDENTIAL_BALANCE_MAGIC_VALUE &&
+              <chakra.span ml={ 2 }>@{ Number(data.token.exchange_rate).toLocaleString() }</chakra.span>
+            }
           </>
         );
       }
